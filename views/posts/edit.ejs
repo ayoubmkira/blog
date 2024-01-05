@@ -1,0 +1,27 @@
+<%- layout("./layouts/boilerplate") %>
+
+<div class="card col-md-6 offset-md-3">
+    <div class="card-body">
+        <h3 class="card-title mb-4 text-center">Edit Post</h3>
+        <form action="/posts/<%= post._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <input type="file" name="image" class="form-control" accept="image/*" id="image">
+                <small>* The old image still, if no image was chosen.</small>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" id="title" name="post[title]" value="<%= post.title %>" class="form-control">
+                <label for="title">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea name="post[body]" class="form-control h-auto" id="body" rows="6"><%= post.body %></textarea>
+                <label for="body">Body</label>
+            </div>
+            <div>
+                <button class="btn btn-primary rounded-0">Update Post</button>
+                <a href="/posts/<%= post.id %>" class="btn btn-warning rounded-0">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% block("script").append('<script src="/js/form_validation.js"></script>') %>

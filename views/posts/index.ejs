@@ -1,0 +1,24 @@
+<%- layout("./layouts/boilerplate") %>
+
+<div class="d-flex justify-content-end mb-4">
+    <a href="/posts/new" class="btn btn-primary rounded-0">New Post</a>
+</div>
+<% posts.forEach((post) => { %>
+    <div class="card mb-3 rounded-0">
+        <div class="row g-0">
+            <div class="col-md-4 col-lg-3">
+                <img src="<%= post.image.thumbnailUrl %>" class="img-fluid ratio ratio-1x1" alt="">
+            </div>
+            <div class="col-md-8 col-lg-9">
+                <div class="card-body">
+                    <h3 class="card-title mb-3"><%= post.title %></h3>
+                    <p class="card-text text-truncate"><%= post.body %></p>
+                    <p class="card-text">
+                        <small class="text-muted">Last updated <%= post.lastUpdated %></small>
+                    </p>
+                    <a href="/posts/<%= post._id %>" class="btn btn-primary btn-sm rounded-0">Visit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% }) %>

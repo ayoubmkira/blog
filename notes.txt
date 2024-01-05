@@ -1,0 +1,16 @@
+
+
+## TODOS:
+    - JOI Validation.
+    - Check type image Uploaded.
+    - Check Image Uploaded Size.
+
+
+## COMPLETED:
+    - Mongoose Validation On Update.
+    - Use Flash Messages.
+    - Save image on the Server.
+    - Delete Reviews When Deleting The Post.
+    
+    
+## Latest:

@@ -1,0 +1,32 @@
+<%- layout("./layouts/boilerplate") %>
+
+<div class="card mb-3 rounded-0">
+    <img src="<%= post.image.url %>" class="card-img-top rounded-0" alt="">
+    <div class="card-body">
+        <h3 class="card-title mb-4"><%= post.title %></h3>
+        <p class="card-text" style="white-space: pre-line"><%= post.body %></p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <small class="text-muted">Last updated <%= post.lastUpdated %></small>
+        </li>
+    </ul>
+    <div class="card-footer">
+        <a href="/posts/<%= post.id %>/edit" class="btn btn-primary rounded-0">Edit</a>
+        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+            <button class="btn btn-danger rounded-0">Delete</button>
+        </form>
+        <a href="/posts" class="btn btn-warning rounded-0">All Posts</a>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <%- include("../reviews/show.ejs") %>
+        </div>
+        <div class="col-md-5">
+            <%- include("../reviews/new.ejs") %>
+        </div>
+    </div>
+</div>

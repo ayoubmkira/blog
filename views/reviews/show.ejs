@@ -1,0 +1,18 @@
+
+<% post.reviews.forEach(review => { %>
+    <div class="card mb-3 rounded-0">
+        <div class="card-body">
+            <p class="starability-result" data-rating="<%= review.rating %>">
+                Rated: <%= review.rating %> stars
+            </p>
+            <p class="card-text">Review: <%= review.body %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item text-right">
+                <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-flex justify-content-end" method="post">
+                    <button class="btn btn-danger btn-sm rounded-0">Delete</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+<% }) %>

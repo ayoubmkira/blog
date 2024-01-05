@@ -1,0 +1,26 @@
+<%- layout("./layouts/boilerplate") %>
+
+
+<div class="card col-md-6 offset-md-3">
+    <div class="card-body">
+        <h3 class="card-title mb-4 text-center">New Post</h3>
+        <form action="/posts" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <input type="file" name="image" class="form-control" id="image" accept="image/*" required>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" id="title" name="post[title]" class="form-control" required>
+                <label for="title">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea name="post[body]" class="form-control h-auto" id="body" rows="6" required></textarea>
+                <label for="body">Body</label>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-success btn-block rounded-0" type="submit">Create Post</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% block("script").append('<script src="/js/form_validation.js"></script>') %>
