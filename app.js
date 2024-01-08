@@ -6,12 +6,14 @@ import bodyParser from "body-parser";
 import methodOverride from "method-override";
 import expressSession from "express-session";
 import connectFlash from "connect-flash";
+import passport from "passport";
+import passportLocal from "passport-local";
 import { fileURLToPath } from 'url';
+import { router as userRoutes } from "./server/routes/users.js";
 import { router as postRoutes } from "./server/routes/posts.js";
 import { router as reviewRoutes } from "./server/routes/reviews.js";
 import { ExpressError } from "./utils/expressErrorClass.js";
-
-import { imagekit } from "./imagekit/index.js";
+import { User } from "./server/models/users.js";
 
 const app = express();
 const PORT = 2020;
@@ -32,6 +34,7 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
+// Setup Template Engine:
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -51,30 +54,39 @@ app.use(methodOverride('_method'));
 app.use(expressSession(sessionConfig));
 app.use(connectFlash());
 
-// Flash Middleware:
+// Initialize Passport:
+app.use(passport.initialize());
+app.use(passport.session());
+// Use Local Strategy + And Athenticate our "User" Model:
+passport.use(new passportLocal(User.authenticate()));
+
+// Serialize user information to the session:
+passport.serializeUser(User.serializeUser());
+// Deserialize user information from the session:
+passport.deserializeUser(User.deserializeUser());
+
+// First Middleware:
 app.use((req, res, next) => {
+    /*
+        [req.user] is set by Passportjs.
+        [res.locals.currentUser] Make it accessible inside all ejs Templates.
+    */
+    res.locals.currentUser = req.user;
+
+    /*
+        Pass flash messages to all ejs Templates.
+    */
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
 });
 
-
+// User Routes:
+app.use("/", userRoutes);
 // Post Routes:
 app.use("/posts", postRoutes);
-
 // Review Routes:
 app.use("/posts/:id/reviews", reviewRoutes);
-
-
-// Just Test (Purge Cache):
-// app.use("/temp", async (req, res) => {
-//     await imagekit.purgeCache("https://ik.imagekit.io/obgexhgrs6/tr:n-ik_ml_thumbnail/zzz_f1wgNuL3P.jpg", function(error, result) { 
-//         if(error) console.log(error);
-//         else console.log(result);
-//     });
-//     res.send("OK");
-// });
-
 
 // Middleware Page not Found:
 app.all("*", (req, res, next) => {
@@ -87,7 +99,7 @@ app.use((error, req, res, next) => {
     res.status(statusCode).render("error", { message });
 });
 
-
+// Server Listening:
 app.listen(PORT, () => {
     console.log(`Server is listening on Port: ${PORT}`);
 });

@@ -11,6 +11,10 @@ export const getAllPosts = async (req, res) => {
 };
 
 export const renderNewPostForm = (req, res) => {
+    if(!req.isAuthenticated()) {
+        req.flash("error", "You must be authenticated!");
+        return res.redirect("/login");
+    }
     res.render("posts/new");
 };
 

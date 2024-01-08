@@ -1,0 +1,26 @@
+<%- layout("./layouts/boilerplate") %>
+
+<div class="card col-md-6 offset-md-3">
+    <div class="card-body">
+        <h3 class="card-title mb-4 text-center">Register</h3>
+        <form action="/register" method="POST" class="needs-validation" novalidate>
+            <div class="form-floating mb-3">
+                <input type="email" id="email" name="user[email]" class="form-control" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" id="username" name="user[username]" class="form-control" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" id="password" name="user[password]" class="form-control" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-success btn-block rounded-0" type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% block("script").append('<script src="/js/form_validation.js"></script>') %>

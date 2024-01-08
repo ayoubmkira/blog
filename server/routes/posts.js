@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import { renderNewPostForm, getAllPosts, createNewPost, showPost, renderEditFormPost, updatePost, deletePost } from "../controllers/posts.js";
 import { catchAsyncError, validatePost } from "../../utils/middlewares.js";
+import { isLoggedIn } from "../../utils/middlewares.js";
 
 export const router = express.Router();
 
@@ -11,12 +12,12 @@ const upload = multer({ storage });
 
 router.route("/")
     .get(catchAsyncError(getAllPosts))
-    .post(upload.single("image"), validatePost, catchAsyncError(createNewPost));
+    .post(isLoggedIn, upload.single("image"), validatePost, catchAsyncError(createNewPost));
 router.route("/new")
-    .get(renderNewPostForm);
+    .get(isLoggedIn, renderNewPostForm);
 router.route("/:id/edit")
-    .get(catchAsyncError(renderEditFormPost));
+    .get(isLoggedIn, catchAsyncError(renderEditFormPost));
 router.route("/:id")
     .get(catchAsyncError(showPost))
-    .put(upload.single("image"), validatePost, catchAsyncError(updatePost))
-    .delete(catchAsyncError(deletePost));
+    .put(isLoggedIn, upload.single("image"), validatePost, catchAsyncError(updatePost))
+    .delete(isLoggedIn, catchAsyncError(deletePost));

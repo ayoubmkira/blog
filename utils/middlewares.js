@@ -7,6 +7,29 @@ export const catchAsyncError = (func) => {
     };
 };
 
+export const storeReturnTo = (req, res, next) => {
+    if (req.session.returnTo) {
+        /*
+            Store the [returnTo] from session to [returnTo] locals:
+        */
+        res.locals.returnTo = req.session.returnTo;
+    }
+    next();
+};
+
+export const isLoggedIn = (req, res, next) => {
+    if(!req.isAuthenticated()) {
+        /*
+            Store the [originalUrl] into [returnTo] in the session:
+        */
+        req.session.returnTo = req.originalUrl;
+
+        req.flash("error", "You must be authenticated!");
+        return res.redirect("/login");
+    }
+    next();
+};
+
 export const validatePost = (req, res, next) => {
     const { error } = postSchema.validate(req.body);
     
