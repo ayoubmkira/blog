@@ -8,11 +8,16 @@
             <p class="card-text">Review: <%= review.body %></p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item text-right">
-                <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-flex justify-content-end" method="post">
-                    <button class="btn btn-danger btn-sm rounded-0">Delete</button>
-                </form>
+            <li class="list-group-item">
+                <small class="text-muted">by: <%= review.author.username %></small>
             </li>
+            <% if(currentUser && review.author.equals(currentUser._id)) { %>
+                <li class="list-group-item text-right">
+                    <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-flex justify-content-end" method="post">
+                        <button class="btn btn-danger btn-sm rounded-0">Delete</button>
+                    </form>
+                </li>
+            <% } %>
         </ul>
     </div>
 <% }) %>

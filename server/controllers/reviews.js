@@ -9,6 +9,7 @@ export const createNewReview = async (req, res) => {
 
     // -- Check post existance.
 
+    review.author = req.user._id;
     post.reviews.push(review._id);
     await review.save();
     await post.save();

@@ -1,6 +1,8 @@
 
 import mongoose from "mongoose";
 import { Post } from "../server/models/posts.js";
+import { User } from "../server/models/users.js";
+import { Review } from "../server/models/reviews.js";
 
 mongoose.connect("mongodb://127.0.0.1:27017/blog_db");
 
@@ -10,13 +12,16 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-const createPost = async () => {
-    const post = new Post({
-        title: "Post 3",
-        body: "Post 3 body."
-    });
-    
-    await post.save();
-};
+const affectReviewsToUsers = async () => {
+    const users = await User.find({});
+    const reviews = await Review.find({});
 
-createPost();
+    reviews.forEach((review) => {
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+        review.author = randomUser._id;
+        review.save();
+    });
+
+    console.log("end");
+};
+affectReviewsToUsers();

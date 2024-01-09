@@ -8,16 +8,21 @@
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
-            <small class="text-muted">Last updated <%= post.lastUpdated %></small>
+            <small class="">Author: <%= post.author.username %></small>
+        </li>
+        <li class="list-group-item">
+            <small class="text-muted">Last update: <%= post.lastUpdated %></small>
         </li>
     </ul>
-    <div class="card-footer">
-        <a href="/posts/<%= post.id %>/edit" class="btn btn-primary rounded-0">Edit</a>
-        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
-            <button class="btn btn-danger rounded-0">Delete</button>
-        </form>
-        <a href="/posts" class="btn btn-warning rounded-0">All Posts</a>
-    </div>
+    <% if(currentUser && post.author.equals(currentUser._id)) { %>
+        <div class="card-footer">
+            <a href="/posts/<%= post.id %>/edit" class="btn btn-primary rounded-0">Edit</a>
+            <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button class="btn btn-danger rounded-0">Delete</button>
+            </form>
+            <a href="/posts" class="btn btn-warning rounded-0">All Posts</a>
+        </div>
+    <% } %>
 </div>
 
 <div>
@@ -26,7 +31,9 @@
             <%- include("../reviews/show.ejs") %>
         </div>
         <div class="col-md-5">
-            <%- include("../reviews/new.ejs") %>
+            <% if(currentUser) { %>
+                <%- include("../reviews/new.ejs") %>
+            <% } %>
         </div>
     </div>
 </div>

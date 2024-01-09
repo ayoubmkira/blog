@@ -11,6 +11,11 @@
     - Use Flash Messages.
     - Save image on the Server.
     - Delete Reviews When Deleting The Post.
+
+
+## features:
+    - Add Home Page.
+    - Show Number Comments on Posts.
     
     
 ## Latest:

@@ -6,7 +6,7 @@ import { imagekit } from "../../imagekit/index.js";
 import { checkObjectIdValidity } from "../../utils/functions.js";
 
 export const getAllPosts = async (req, res) => {
-    const posts = await Post.find({});
+    const posts = await Post.find({}).populate("author");
     res.render("posts/index", { posts });
 };
 
@@ -33,6 +33,14 @@ export const createNewPost = async (req, res) => {
     });
     // Add image to the Post:
     post.image = { fileId, url, thumbnailUrl };
+
+    /*
+        Affect current LoggedIn User to the Post.
+        [rep.user._id] is maked by Passport.
+    */
+    post.author = req.user._id;
+
+    // Save the New Post:
     await post.save();
 
     req.flash("success", "A new Post was created.");
@@ -43,7 +51,12 @@ export const showPost = async (req, res) => {
     const { id } = req.params;
     checkObjectIdValidity(id);
 
-    const post = await Post.findById(id).populate("reviews");
+    const post = await Post.findById(id).populate({
+        path: "reviews",
+        populate: {
+            path: "author"
+        }
+    }).populate("author");
     if(!post) {
         req.flash("error", "Cannot find that Post!!");
         return res.redirect("/posts");

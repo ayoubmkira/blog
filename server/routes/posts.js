@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import { renderNewPostForm, getAllPosts, createNewPost, showPost, renderEditFormPost, updatePost, deletePost } from "../controllers/posts.js";
 import { catchAsyncError, validatePost } from "../../utils/middlewares.js";
-import { isLoggedIn } from "../../utils/middlewares.js";
+import { isLoggedIn, isAuthor } from "../../utils/middlewares.js";
 
 export const router = express.Router();
 
@@ -16,8 +16,8 @@ router.route("/")
 router.route("/new")
     .get(isLoggedIn, renderNewPostForm);
 router.route("/:id/edit")
-    .get(isLoggedIn, catchAsyncError(renderEditFormPost));
+    .get(isLoggedIn, isAuthor, catchAsyncError(renderEditFormPost));
 router.route("/:id")
     .get(catchAsyncError(showPost))
-    .put(isLoggedIn, upload.single("image"), validatePost, catchAsyncError(updatePost))
-    .delete(isLoggedIn, catchAsyncError(deletePost));
+    .put(isLoggedIn, isAuthor, upload.single("image"), validatePost, catchAsyncError(updatePost))
+    .delete(isLoggedIn, isAuthor, catchAsyncError(deletePost));
