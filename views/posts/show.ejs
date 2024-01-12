@@ -14,14 +14,24 @@
             <small class="text-muted">Last update: <%= post.lastUpdated %></small>
         </li>
     </ul>
-    <% if(currentUser && post.author.equals(currentUser._id)) { %>
+    <% if(currentUser) { %>
         <div class="card-footer">
-            <a href="/posts/<%= post.id %>/edit" class="btn btn-primary rounded-0">Edit</a>
-            <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
-                <button class="btn btn-danger rounded-0">Delete</button>
-            </form>
-            <a href="/posts" class="btn btn-warning rounded-0">All Posts</a>
+            <button class="btn <%= (post.likedByUsers.includes(currentUser._id))? "btn-danger": "btn-white" %> btn-like rounded-0" id="btn-like">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+                </svg>
+            </button>
+            <% if(post.author.equals(currentUser._id)) { %>
+                <a href="/posts/<%= post.id %>/edit" class="btn btn-primary rounded-0">Edit</a>
+                <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button class="btn btn-danger rounded-0">Delete</button>
+                </form>
+            <% } %>
         </div>
+        <script>
+            const postId = "<%= post._id %>";
+        </script>
+        <% block("script").append('<script src="/js/likes_feature.js"></script>') %>
     <% } %>
 </div>
 

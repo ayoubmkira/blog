@@ -32,6 +32,14 @@ const postSchema = new Schema({
     reviews: [{
         type: Schema.Types.ObjectId,
         ref: "Review"
+    }],
+    views: {
+        type: Number,
+        default: 0
+    },
+    likedByUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }]
 });
 

@@ -5,3 +5,10 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.fs-7 {
+    font-size: .75rem !important;
+}
+.btn-white {
+    background-color: white;
+}

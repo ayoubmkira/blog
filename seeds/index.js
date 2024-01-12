@@ -12,16 +12,9 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-const affectReviewsToUsers = async () => {
-    const users = await User.find({});
-    const reviews = await Review.find({});
-
-    reviews.forEach((review) => {
-        const randomUser = users[Math.floor(Math.random() * users.length)];
-        review.author = randomUser._id;
-        review.save();
-    });
-
-    console.log("end");
+const putViewsProperty = async () => {
+    const result = await Post.updateMany({}, {views: 0});
+    console.log(result);
 };
-affectReviewsToUsers();
+
+putViewsProperty();

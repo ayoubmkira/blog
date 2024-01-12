@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { renderNewPostForm, getAllPosts, createNewPost, showPost, renderEditFormPost, updatePost, deletePost } from "../controllers/posts.js";
+import { renderNewPostForm, getAllPosts, createNewPost, showPost, renderEditFormPost, updatePost, deletePost, likeDislikePost } from "../controllers/posts.js";
 import { catchAsyncError, validatePost } from "../../utils/middlewares.js";
 import { isLoggedIn, isAuthor } from "../../utils/middlewares.js";
 
@@ -20,4 +20,5 @@ router.route("/:id/edit")
 router.route("/:id")
     .get(catchAsyncError(showPost))
     .put(isLoggedIn, isAuthor, upload.single("image"), validatePost, catchAsyncError(updatePost))
+    .patch(isLoggedIn, catchAsyncError(likeDislikePost))
     .delete(isLoggedIn, isAuthor, catchAsyncError(deletePost));

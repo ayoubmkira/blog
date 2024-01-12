@@ -6,8 +6,22 @@ import { imagekit } from "../../imagekit/index.js";
 import { checkObjectIdValidity } from "../../utils/functions.js";
 
 export const getAllPosts = async (req, res) => {
-    const posts = await Post.find({}).populate("author");
-    res.render("posts/index", { posts });
+    let { search } = req.query;
+    let posts;
+
+    if(search) {
+        const query = {
+            $or: [
+                { body: { $regex: search, $options: 'i' } },
+                { title: { $regex: search, $options: 'i' } }
+            ]
+        };
+        posts = await Post.find(query).populate("author");
+    } else {
+        posts = await Post.find({}).populate("author");
+    }
+
+    res.render("posts/index", { posts, search });
 };
 
 export const renderNewPostForm = (req, res) => {
@@ -61,6 +75,10 @@ export const showPost = async (req, res) => {
         req.flash("error", "Cannot find that Post!!");
         return res.redirect("/posts");
     }
+
+    // Increment number of views:
+    post.views +=1;
+    post.save();
 
     res.render("posts/show", { post });
 };
@@ -128,4 +146,26 @@ export const deletePost = async (req, res) => {
         req.flash("success", "The post was deleted Successfully.");
     }
     res.redirect(`/posts`);
+};
+
+export const likeDislikePost = async (req, res) => {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+
+    if(!post) {
+        req.flash("success", "No Post was found!!");
+        return res.json({ message: "Post not Found." }).redirect(`/posts/${id}`);
+    }
+
+    // Check if Current User Likes the Post Already:
+    if(post.likedByUsers.includes(req.user._id)) {
+        await post.updateOne({ $pull: { likedByUsers: req.user._id } });
+        // req.flash("success", "You dislike this Post.");
+        res.json({ message: "Post was Unliked." });
+    } else {
+        post.likedByUsers.push(req.user._id);
+        await post.save();
+        // req.flash("success", "You like this Post.");
+        res.json({ message: "Post was Liked." });
+    }
 };

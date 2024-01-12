@@ -1,10 +1,9 @@
 
-
+=====================================================================================
 ## TODOS:
     - JOI Validation.
     - Check type image Uploaded.
     - Check Image Uploaded Size.
-
 
 ## COMPLETED:
     - Mongoose Validation On Update.
@@ -12,10 +11,27 @@
     - Save image on the Server.
     - Delete Reviews When Deleting The Post.
 
-
-## features:
+=====================================================================================
+## Features:
     - Add Home Page.
+    - Add Infos For User (firstName, lastName, biography, socialMediaLinks, image).
+    - Add Tags on Posts.
+    - Add Date on Reviews.
+    - Add User Details Page.
+
+## Completed Features:
     - Show Number Comments on Posts.
-    
-    
+    - Add Number of Views on Each Post.
+    - Show Date on Posts.
+
+=====================================================================================
+## Other Features:
+    - User can Like Comment.
+    - Put Post body Property as Markdown.
+
+## Completed Other Features:
+    - User can Like Post.
+
+=====================================================================================
 ## Latest:
+    - ...
