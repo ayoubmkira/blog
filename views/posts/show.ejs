@@ -1,5 +1,7 @@
 <%- layout("./layouts/boilerplate") %>
 
+<% block("head").append('<link rel="stylesheet" href="/css/stars.css">') %>
+
 <div class="card mb-3 rounded-0">
     <img src="<%= post.image.url %>" class="card-img-top rounded-0" alt="">
     <div class="card-body">

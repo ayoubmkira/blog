@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import path from "path";
+import { User } from "../models/users.js";
 import { Post } from "../models/posts.js";
 import { ExpressError } from "../../utils/expressErrorClass.js";
 import { imagekit } from "../../imagekit/index.js";
@@ -56,6 +57,9 @@ export const createNewPost = async (req, res) => {
 
     // Save the New Post:
     await post.save();
+
+    // Add Post ID to User Document:
+    await User.findByIdAndUpdate(req.user._id, { $push: { posts: post._id } });
 
     req.flash("success", "A new Post was created.");
     res.redirect("/posts");
@@ -168,4 +172,14 @@ export const likeDislikePost = async (req, res) => {
         // req.flash("success", "You like this Post.");
         res.json({ message: "Post was Liked." });
     }
+};
+
+export const getPostsByUser = async (req, res) => {
+    const { user_id } = req.params;
+    const user = await User.findById(user_id).populate({
+        path: "posts"
+    });
+
+    res.render("posts/user_posts", { user });
+
 };

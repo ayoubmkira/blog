@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import moment from "moment";
 import { Review } from "./reviews.js";
+import { User } from "./users.js";
 
 const { Schema } = mongoose;
 const postSchema = new Schema({
@@ -49,8 +50,10 @@ postSchema.virtual("lastUpdated").get(function () {
 });
 
 postSchema.post("findOneAndDelete", async function (post) {
-    if(post)
+    if(post) {
         await Review.deleteMany({ _id: { $in: post.reviews } });
+        await User.findByIdAndUpdate(post.author, { $pull: { posts: post._id }});
+    }
 });
 
 export const Post = mongoose.model("Post", postSchema);

@@ -8,7 +8,12 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    posts: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Post"
+    }]
+
 });
 
 /*

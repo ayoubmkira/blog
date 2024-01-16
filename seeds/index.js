@@ -12,9 +12,25 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-const putViewsProperty = async () => {
-    const result = await Post.updateMany({}, {views: 0});
-    console.log(result);
+const affectPostsToUsers = async () => {
+    
+    // Get all Users:
+    const users = await User.find();
+
+    await users.forEach(async (user) => {
+        const userPosts = await Post.find({ author: user._id });
+        const userPostsIds = userPosts.map(post => post._id);
+        user.posts.push(...userPostsIds);
+        user.save();
+    });
+
+    console.log("DONE");
+
 };
 
-putViewsProperty();
+// affectPostsToUsers();
+
+const emptyUsersPosts = async () => {
+    await User.updateMany({}, { posts: [] });
+};
+// emptyUsersPosts();

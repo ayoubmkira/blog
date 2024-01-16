@@ -1,16 +1,42 @@
 <%- layout("./layouts/boilerplate") %>
 
-<div class="text-center mb-5">
-    <h1 class="fw-bold">Markdown Blog</h1>
-    <p>Write your blogs, share them with others instantly, enjoy and etc..</p>
-</div>
+
 
 <div class="row">
     <div class="col-lg-9">
-        <div class="d-flex justify-content-end mb-4">
-            <a href="/posts/new" class="btn btn-primary rounded-0">New Post</a>
+
+        <!-- User Infos -->
+        <div class="card mb-5 rounded-0">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= user.username %></h5>
+                        <p class="card-text">Biography.</p>
+        
+                        <ul class="list-group list-group-horizontal text-center rounded-0">
+                            <li class="list-group-item flex-fill list-group-item-dark border-0">
+                                <h5>Posts</h5>
+                                <span class="text-muted">48</span>
+                            </li>
+                            <li class="list-group-item flex-fill list-group-item-dark border-0 border-start border-end">
+                                <h5>Likes</h5>
+                                <span class="text-muted">1230</span>
+                            </li>
+                            <li class="list-group-item flex-fill list-group-item-dark border-0">
+                                <h5>Views</h5>
+                                <span class="text-muted">12000</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <% posts.forEach((post) => { %>
+
+        <!-- Posts Of User -->
+        <% user.posts.forEach((post) => { %>
             <div class="card mb-5 rounded-0">
                 <img src="<%= post.image.thumbnailUrl %>" class="img-fluid card-img-top rounded-0" style="height: 360px; object-fit: contain;" alt="post image">
                 <div class="card-body border-top border-bottom py-2 d-flex align-items-center">
@@ -18,9 +44,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                         </svg>
-                        <a href="/posts/user/<%= post.author._id %>" class="link-primary">
-                            <span class="fs-7 ms-2"><%= post.author.username %></span>
-                        </a>
+                        <span class="fs-7 ms-2"><%= user.username %></span>
                     </div>
                     <div class="card-subtitle d-flex align-items-center ms-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-fill" viewBox="0 0 16 16">

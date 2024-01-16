@@ -32,6 +32,13 @@
 ## Completed Other Features:
     - User can Like Post.
 
+
+=====================================================================================
+## Other Features:
+    - Page (my_posts) of current User.
+    - Page (liked_posts) by current User.
+    - 
+
 =====================================================================================
 ## Latest:
-    - ...
+    - Updating User Model.
