@@ -19,9 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Content-Type": "application/json",
             }
         })
-        // .then((response) => response.json())
-        // .then(message => console.log(message))
-        .catch(error => console.log(error));
+        .then((response) => response.json())
+        .then((data) => {
+            if(data.error) {
+                throw new Error(data.error);
+            }
+            console.log(data.message);
+        })
+        .catch((error) => console.error(error));
 
     });
 

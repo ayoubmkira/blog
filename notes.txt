@@ -4,6 +4,10 @@
     - JOI Validation.
     - Check type image Uploaded.
     - Check Image Uploaded Size.
+    - Remove Tag if it is not Belong to any Post.
+    - Make Pagination On Posts Page.
+    - Add a Markdown Blog.
+    - Check if Post Exists Before Doing Any Thing (Create Middleware).
 
 ## COMPLETED:
     - Mongoose Validation On Update.
@@ -15,14 +19,14 @@
 ## Features:
     - Add Home Page.
     - Add Infos For User (firstName, lastName, biography, socialMediaLinks, image).
-    - Add Tags on Posts.
     - Add Date on Reviews.
-    - Add User Details Page.
 
 ## Completed Features:
     - Show Number Comments on Posts.
     - Add Number of Views on Each Post.
     - Show Date on Posts.
+    - Add Tags on Posts.
+    - Add User Details Page.
 
 =====================================================================================
 ## Other Features:
@@ -37,8 +41,17 @@
 ## Other Features:
     - Page (my_posts) of current User.
     - Page (liked_posts) by current User.
+    - Create Archive in Sidebar.
+    - Create Pagination On Posts.
+    - Structure System OF Handling Tag Collections (Make the Logic inside The Controllers Tag).
+
+## Completed Other Features:
     - 
 
 =====================================================================================
 ## Latest:
-    - Updating User Model.
+
+
+
+    const firstTime = new Date().getTime();
+    console.log("PASSED TIME :: ", (new Date().getTime() - firstTime) / 1000);

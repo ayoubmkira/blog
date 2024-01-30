@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import moment from "moment";
 import { Review } from "./reviews.js";
 import { User } from "./users.js";
+import { Tag } from "./tags.js";
 
 const { Schema } = mongoose;
 const postSchema = new Schema({
@@ -41,6 +42,10 @@ const postSchema = new Schema({
     likedByUsers: [{
         type: Schema.Types.ObjectId,
         ref: "User"
+    }],
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: "Tag"
     }]
 });
 
@@ -51,8 +56,12 @@ postSchema.virtual("lastUpdated").get(function () {
 
 postSchema.post("findOneAndDelete", async function (post) {
     if(post) {
+        // Delete All Reviews of the Post:
         await Review.deleteMany({ _id: { $in: post.reviews } });
+        // Delete Post ID from User Collection:
         await User.findByIdAndUpdate(post.author, { $pull: { posts: post._id }});
+        // Delete Post ID from Tag Collection:
+        await Tag.updateMany({ _id: { $in: post.tags } }, { $pull: { posts: post._id }});
     }
 });
 

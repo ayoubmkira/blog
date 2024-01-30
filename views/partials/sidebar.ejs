@@ -18,3 +18,38 @@
         </form>
     </div>
 </div>
+<div class="card bg-light rounded-0 mb-4">
+    <div class="card-body">
+        <h5 class="mb-2">Tags</h5>
+        <div>
+            <% sidebarData.tags.forEach((tag) => { %>
+                <a href="/posts/tag/<%= tag._id %>" class="badge rounded-pill btn bg-primary fs-6 fw-normal pb-2 px-3 mt-2"><%= tag.name %></a>
+            <% }) %>
+        </div>
+    </div>
+</div>
+<div class="card bg-light rounded-0 mb-4">
+    <div class="card-body">
+        <h5 class="mb-4">Recent Posts</h5>
+        <div>
+            <% sidebarData.recentPosts.forEach((post) => { %>
+                <div class="card mt-3 rounded-0">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <div class="ratio ratio-1x1">
+                                <img src="<%= post.image.thumbnailUrl %>" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body py-2">
+                                <h6 class="card-title text-truncate fs-7 fw-bold"><%= post.title %></h6>
+                                <p class="card-text text-truncate-2 fs-7"><%= post.body %></p>
+                                <a href="/posts/<%= post._id %>" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 import { postSchema, reviewSchema } from "../schemas.js";
 import { Post } from "../server/models/posts.js";
 import { Review } from "../server/models/reviews.js";
+import { Tag } from "../server/models/tags.js";
 import { ExpressError } from "./expressErrorClass.js";
 
 export const catchAsyncError = (func) => {
@@ -74,4 +75,24 @@ export const validateReview = (req, res, next) => {
     } else {
         next();
     }
+};
+
+export const checkPostExists = async (req, res, next) => {
+    const { id } = req.params;
+    const post = await Post.exists({ _id: id });
+
+    if(!post) {
+        req.flash("error", "Post not found!");
+        return res.redirect("/posts");
+    }
+
+    next();
+};
+
+export const fetchDataForSidebar = async (req, res, next) => {
+    let tags = await Tag.find({});
+    let recentPosts = await Post.find({}).select("_id image title body").sort({ "createdAt": "desc" }).limit(3);
+
+    res.locals.sidebarData = { tags, recentPosts };
+    next();
 };

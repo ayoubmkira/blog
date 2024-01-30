@@ -1,5 +1,7 @@
 <%- layout("./layouts/boilerplate") %>
 
+<% block("head").append('<link rel="stylesheet" href="/css/checkbox_inputs.css">') %>
+
 <div class="card col-md-6 offset-md-3">
     <div class="card-body">
         <h3 class="card-title mb-4 text-center">Edit Post</h3>
@@ -16,6 +18,27 @@
                 <textarea name="post[body]" class="form-control h-auto" id="body" rows="6"><%= post.body %></textarea>
                 <label for="body">Body</label>
             </div>
+            <div class="form-floating mb-3">
+                <div class="form-control" style="height: auto;">
+                    <div class="ks-cboxtags ps-0 mb-0 mt-3">
+                        <script>
+                            let tags = <%- JSON.stringify(tags) %>;
+                        </script>
+                        <div class="ks-cboxtags-list" id="ks-cboxtags-list">
+                            <% tags.forEach((tag) => { %>
+                                <div>
+                                    <input type="checkbox" id="checkbox_<%= tag.name %>" name="post[tags][]" value="<%= tag.name %>" <%= (post.tags.includes(tag._id))? "checked": "" %>>
+                                    <label for="checkbox_<%= tag.name %>" class="border fs-7"><%= tag.name %></label>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <div>
+                            <label class="border fs-7 bg-primary text-white" type="button" data-bs-toggle="modal" data-bs-target="#modalNewtag" data-bs-whatever="@mdo">New Tag</label>
+                        </div>
+                    </div>
+                </div>
+                <label>Tags</label>
+            </div>
             <div>
                 <button class="btn btn-primary rounded-0">Update Post</button>
                 <a href="/posts/<%= post.id %>" class="btn btn-warning rounded-0">Cancel</a>
@@ -24,4 +47,33 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalNewtag" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/tags" method="POST" id="form_add_new_tag" class="needs-validation" novalidate>
+                    <div class="alert alert-danger d-none" id="tag_message">
+                        Wooow.
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="name" name="tag[name]" class="form-control" required>
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <% block("script").append('<script src="/js/form_validation.js"></script>') %>
+<% block("script").append('<script src="/js/create_tag.js"></script>') %>

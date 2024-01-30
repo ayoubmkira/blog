@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import { router as userRoutes } from "./server/routes/users.js";
 import { router as postRoutes } from "./server/routes/posts.js";
 import { router as reviewRoutes } from "./server/routes/reviews.js";
+import { router as tagRoutes} from "./server/routes/tags.js";
 import { ExpressError } from "./utils/expressErrorClass.js";
 import { User } from "./server/models/users.js";
 
@@ -87,6 +88,8 @@ app.use("/", userRoutes);
 app.use("/posts", postRoutes);
 // Review Routes:
 app.use("/posts/:id/reviews", reviewRoutes);
+// Tag Routes:
+// app.use("/tags", tagRoutes);
 
 // Middleware Page not Found:
 app.all("*", (req, res, next) => {
@@ -96,7 +99,7 @@ app.all("*", (req, res, next) => {
 // Error Middleware:
 app.use((error, req, res, next) => {
     const { statusCode = 500, message = "Something went Wrong!" } = error;
-    res.status(statusCode).render("error", { message });
+    res.status(statusCode).render("error", { message, stack: error.stack });
 });
 
 // Server Listening:

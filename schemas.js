@@ -8,7 +8,8 @@ export const postSchema = Joi.object({
             thumbnailUrl: Joi.string().uri()
         }),
         title: Joi.string().trim().min(3).required(),
-        body: Joi.string().trim().min(10).required()
+        body: Joi.string().trim().min(10).required(),
+        tags: Joi.array().items(Joi.string())
     }).required()
 });
 
