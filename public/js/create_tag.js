@@ -72,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
     */
 
     // [tags] imported from ejs Template:
-    tags = tags.map((tagObj) => tagObj.name);
+    tags = tags.map((tagObj) => tagObj.name.toLowerCase());
 
     formAddNewTag.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const tagName = formAddNewTag.elements["name"].value.trim();
+        const tagName = formAddNewTag.elements["name"].value.trim().toLowerCase();
 
         if(tags.includes(tagName)) {
             showMessage("error", "Tag name already exists!");

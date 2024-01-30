@@ -90,9 +90,35 @@ export const checkPostExists = async (req, res, next) => {
 };
 
 export const fetchDataForSidebar = async (req, res, next) => {
-    let tags = await Tag.find({});
-    let recentPosts = await Post.find({}).select("_id image title body").sort({ "createdAt": "desc" }).limit(3);
+    const tags = await Tag.find({});
+    const recentPosts = await Post.find({}).select("_id image title body").sort({ "createdAt": "desc" }).limit(3);
+    let topPosts;
+    await Post.aggregate([
+        {
+            $addFields: {
+                tagsLength: { $size: "$likedByUsers" }
+            }
+        }, {
+            $sort: { tagsLength: -1 }
+        }, {
+            $limit: 3,
+        }, {
+            $project: {
+                _id: 1,
+                image: 1,
+                title: 1,
+                body: 1,
+                likedByUsers: 1,
+            }
+        }
+    ])
+    .then(results => {
+        topPosts = results;
+    })
+    .catch(err => {
+        console.error(err);
+    });
 
-    res.locals.sidebarData = { tags, recentPosts };
+    res.locals.sidebarData = { tags, recentPosts, topPosts };
     next();
 };
